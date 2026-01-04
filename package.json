@@ -1,0 +1,18 @@
+{
+  "name": "gtfs-animation",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "download": "node ./render/download.js"
+  },
+  "dependencies": {
+    "@maplibre/maplibre-gl-native": "^6.0.0",
+    "@oxth/heatmap": "^1.0.7",
+    "@turf/turf": "^7.2.0",
+    "maplibre-gl": "^5.1.0",
+    "p-limit": "^7.2.0",
+    "protobufjs": "^7.4.0",
+    "sharp": "^0.33.5"
+  }
+}
