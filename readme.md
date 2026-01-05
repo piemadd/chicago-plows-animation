@@ -83,3 +83,12 @@ const decompressPlows = (chunk) => {
   };
 };
 ```
+
+## API (ish)
+
+Fetch a list of files from here: [`https://query-chicago-plows-data-v1.piero.workers.dev`](https://query-chicago-plows-data-v1.piero.workers.dev)
+Query parameters:
+- `year`: Four digit integer. Filters by year.
+- `month`: Two digit, zero padded, integer. Filters by month (only works if `year` is defined).
+- `date`: Two digit, zero padded, integer. Filters by month (only works if `year` and `month` are defined).
+- `returnArray`: `true` will return the results as a plain list instead of a dictionary.
