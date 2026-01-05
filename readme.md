@@ -92,3 +92,5 @@ Query parameters:
 - `month`: Two digit, zero padded, integer. Filters by month (only works if `year` is defined).
 - `date`: Two digit, zero padded, integer. Filters by month (only works if `year` and `month` are defined).
 - `returnArray`: `true` will return the results as a plain list instead of a dictionary.
+
+The actual files are available at `https://chicago-plows-data-v1.pgm.sh/${fileName}`, such as [`https://chicago-plows-data-v1.pgm.sh/2026/01/01/00_00_04.txt`](https://chicago-plows-data-v1.pgm.sh/2026/01/01/00_00_04.txt).
