@@ -28,3 +28,58 @@ Follow these steps CAREFULLY (after downloading)
 - `bash merge.sh` - just ffmpeg to spit out a single mp4
 
 ok have fun, or not
+
+## File Format
+While the data files seem to be ordinary txt, they are not. Inside is a series of UTF-16 encoded characters, with every 3 characters representing a snowplow ID, longitude, and latitude.
+Decoding the ID is fairly straightforward: just get the character code, like so:
+```js
+const plowID = rawPlow.charCodeAt(0);
+```
+While the longitude and latitude are slightly more complex (due to me truncating and offsetting the data to save space), it follows pretty much the same concept. Get the character code, divide by 100,000, and then add the bounding box minimum value to that, like so:
+```js
+const CHICAGO_PLOWS_MIN_LON = -88.0;
+const CHICAGO_PLOWS_MIN_LAT = 41.6;
+const plowLon = (rawPlow.charCodeAt(1) / 100000) + CHICAGO_PLOWS_MIN_LON;
+const plowLat = (rawPlow.charCodeAt(2) / 100000) + CHICAGO_PLOWS_MIN_LAT;
+```
+
+All of this together leaves you with a function like this (`chunk` is a string of characters, presumed to have a length divisible by three):
+```js
+const CHICAGO_PLOWS_MIN_LON = -88.0;
+const CHICAGO_PLOWS_MIN_LAT = 41.6;
+
+const decompressPlows = (chunk) => {
+  const arrayOfRawPlows = chunk.match(/.{1,3}/g);
+
+  if (!arrayOfRawPlows) return {
+    "type": "FeatureCollection",
+    "features": [],
+  };
+
+  const plowsAsPoints = arrayOfRawPlows.map((rawPlow) => {
+    const plowID = rawPlow.charCodeAt(0);
+    const plowLon = (rawPlow.charCodeAt(1) / 100000) + CHICAGO_PLOWS_MIN_LON;
+    const plowLat = (rawPlow.charCodeAt(2) / 100000) + CHICAGO_PLOWS_MIN_LAT;
+
+    return {
+      "type": "Feature",
+      "properties": {
+        plowID,
+      },
+      "geometry": {
+        "coordinates": [
+          plowLon,
+          plowLat
+        ],
+        "type": "Point"
+      }
+
+    };
+  }).filter((plow) => plow.geometry.coordinates[0] && plow.geometry.coordinates[1])
+
+  return {
+    "type": "FeatureCollection",
+    "features": plowsAsPoints,
+  };
+};
+```

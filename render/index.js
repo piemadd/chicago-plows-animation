@@ -97,9 +97,7 @@ const asyncSaveMapImage = async (listOfFiles) => {
 };
 
 const CHICAGO_PLOWS_MIN_LON = -88.0;
-const CHICAGO_PLOWS_MAX_LON = -87.5;
 const CHICAGO_PLOWS_MIN_LAT = 41.6;
-const CHICAGO_PLOWS_MAX_LAT = 42.2;
 
 const decompressPlows = (chunk) => {
   const arrayOfRawPlows = chunk.match(/.{1,3}/g);
@@ -113,10 +111,6 @@ const decompressPlows = (chunk) => {
     const plowID = rawPlow.charCodeAt(0);
     const plowLon = (rawPlow.charCodeAt(1) / 100000) + CHICAGO_PLOWS_MIN_LON;
     const plowLat = (rawPlow.charCodeAt(2) / 100000) + CHICAGO_PLOWS_MIN_LAT;
-
-    //console.log(rawPlow[0], String.fromCharCode(plowID), rawPlow[0] == String.fromCharCode(plowID))
-
-    //console.log(plowID, plowLon, plowLat)
 
     return {
       "type": "Feature",
